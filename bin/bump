@@ -34,10 +34,10 @@ main() {
 		git reset -- ${ROOT_DIR}
 		git add "${ROOT_DIR}/pyproject.toml"
 		git add "${ROOT_DIR}/uv.lock"
-		git commit -m "version: release ${version}"
+		git commit -m "version: release ${new_version}"
 		git push
 
-	    echo "Release at https://github.com/Flared/python-flareio/releases/new?tag=v${version}&target=main&title=v${version}"
+	    echo "Release at https://github.com/Flared/flareio-cli/releases/new?tag=v${new_version}&target=main&title=v${new_version}"
 	fi
 }
 
