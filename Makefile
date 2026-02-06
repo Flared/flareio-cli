@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := ci
+
 .PHONY: test
 test:
 	uv run pytest
