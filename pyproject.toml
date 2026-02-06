@@ -25,6 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "flareio>=1.2.0",
+    "typer>=0.21.1",
 ]
 
 [project.scripts]
