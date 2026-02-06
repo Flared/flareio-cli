@@ -8,5 +8,5 @@ We recommend that you run `flareio-cli` using [uv](https://docs.astral.sh/uv/).
 
 **Display Available Commands**
 ```
-$ uvx run flareio-cli --help
+$ uvx flareio-cli --help
 ```
