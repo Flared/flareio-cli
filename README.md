@@ -1,3 +1,3 @@
 # flareio-cli
 
-CLI interface for the [flare.io](https://flare.io/) API.
+CLI interface for the [flare.io API](https://api.docs.flare.io/).
