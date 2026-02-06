@@ -33,6 +33,7 @@ main() {
 
 		git reset -- ${ROOT_DIR}
 		git add "${ROOT_DIR}/pyproject.toml"
+		git add "${ROOT_DIR}/uv.lock"
 		git commit -m "version: release ${version}"
 		git push
 
