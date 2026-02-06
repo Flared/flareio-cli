@@ -21,4 +21,6 @@ format-check:
 clean:
 	rm -rf dist .venv
 
-
+.PHONY: venv
+venv:
+	uv sync
