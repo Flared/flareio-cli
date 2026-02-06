@@ -26,7 +26,6 @@ main() {
 	read -p "Release ${version}? [y/n]" -n 1 -r
 	echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-	    poetry version "${version}"
         uv version ${new_version}
 
 		git reset -- ${ROOT_DIR}
