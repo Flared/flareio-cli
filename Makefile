@@ -8,3 +8,7 @@ check:
 
 .PHONY: ci
 ci: test check
+
+.PHONY: clean
+clean:
+	rm -rf dist .venv
