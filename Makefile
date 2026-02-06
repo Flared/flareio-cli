@@ -13,6 +13,7 @@ ci: test check format-check
 
 .PHONY: format
 format:
+	uv run ruff check --select I --fix
 	uv run ruff format
 
 .PHONY: format-check
