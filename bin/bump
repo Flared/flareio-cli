@@ -18,14 +18,10 @@ main() {
     current_version=$(uv version --short)
     echo "Current version is ${current_version}"
 
-    local new_version=$1
+    local new_version="${1}"
     if [[ -z "${new_version}" ]]; then
         fail "Please specify the new version!"
     fi
-
-	if ! (python -c "from packaging import version; assert version.parse('${new_version}') > version.parse('${current_version}')" 2> /dev/null); then
-	  fail "error: version must be greater than ${current_version}"
-	fi
 
 	read -p "Release ${version}? [y/n]" -n 1 -r
 	echo
