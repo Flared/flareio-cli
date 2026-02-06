@@ -10,7 +10,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.scripts]
-flareio = "flareio_cli:main"
+flareio = "flareio_cli:cli.main"
 
 [build-system]
 requires = ["uv_build>=0.9.28,<0.10.0"]
