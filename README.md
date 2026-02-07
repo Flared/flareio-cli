@@ -1,6 +1,6 @@
 # flareio-cli
 
-CLI interface for the [flare.io API](https://api.docs.flare.io/).
+Beta CLI interface for the [flare.io API](https://api.docs.flare.io/).
 
 ## Basic Usage
 
