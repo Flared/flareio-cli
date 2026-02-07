@@ -26,5 +26,8 @@ clean:
 	rm -rf dist .venv
 
 .PHONY: venv
-venv:
+venv: .venv
+
+.venv: uv.lock pyproject.toml
+	rm -rf .venv
 	uv sync
