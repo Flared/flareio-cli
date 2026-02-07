@@ -4,19 +4,14 @@
 
 The [full CLI documentation](https://api.docs.flare.io/sdk/cli) can be found on Flare's API documentation website.
 
-## Basic Usage
-
-We recommend that you run `flareio-cli` using [uv](https://docs.astral.sh/uv/).
-
-```
-$ uvx flareio-cli --help
-```
-
 ## Installing
 
-`flareio-cli` is [available on PyPI](https://pypi.org/project/flareio-cli/), you can install it using `pip install flareio-cli`.
+`flareio-cli` is [available on PyPI](https://pypi.org/project/flareio-cli/), you can install it using:
+```
+pip install flareio-cli`
+```
 
-However, we recommend that you invoke it using [uv](https://docs.astral.sh/uv/). Example::
+However, we recommend that you invoke it using [uv](https://docs.astral.sh/uv/). Example:
 ```
 uvx flareio-cli --help
 ```
