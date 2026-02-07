@@ -6,19 +6,27 @@ The [full CLI documentation](https://api.docs.flare.io/sdk/cli) can be found on 
 
 ## Installing
 
-`flareio-cli` is [available on PyPI](https://pypi.org/project/flareio-cli/), you can install it using:
+`flareio-cli` is [available on PyPI](https://pypi.org/project/flareio-cli/).
+You may find all available versions on the Github [releases](https://github.com/Flared/flareio-cli/releases) page.
+
+Invoke it directly using [uv](https://docs.astral.sh/uv/) (recommended):
+```bash
+# Running the most recent version.
+uvx flareio-cli --help
+
+# Running a specific version. Recommended to ensure stability.
+# Example: uvx flareio-cli@0.5.0 --help
+uvx flareio-cli@version --help
 ```
+
+Or install it:
+```bash
+# Using uv
+uv tool install flareio-cli
+
+# Using pip
 pip install flareio-cli
 ```
-
-However, we recommend that you invoke it using [uv](https://docs.astral.sh/uv/). Example:
-```
-uvx flareio-cli --help
-```
-
-## Configuration
-
-For most commands, the cli requires that you export the `FLARE_API_KEY` environment variable.
 
 ## Usage Example
 
