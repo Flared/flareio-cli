@@ -4,11 +4,13 @@
 
 The [full CLI documentation](https://api.docs.flare.io/sdk/cli) can be found on Flare's API documentation website.
 
+## Changelog & Releases
+
+You may find the [changelog and all available versions](https://github.com/Flared/flareio-cli/releases) on the Github releases page.
+
 ## Installing
 
 `flareio-cli` is [available on PyPI](https://pypi.org/project/flareio-cli/).
-
-You may find the [changelog and all available versions](https://github.com/Flared/flareio-cli/releases) on the Github releases page.
 
 Invoke it directly using [uv](https://docs.astral.sh/uv/) (recommended):
 ```bash
