@@ -1,13 +1,15 @@
 import pathlib
 import pydantic
+import requests
 
 from datetime import timedelta
 from flareio._ratelimit import _Limiter
-from flareio.api_client import FlareApiClient
 from flareio_cli.api.models.credentials import CredentialItem
 from flareio_cli.csv import PydanticCsvWriter
 from flareio_cli.cursor import CursorFile
 from flareio_cli.progress import export_progress
+
+import typing as t
 
 
 class CsvItem(pydantic.BaseModel):
@@ -20,8 +22,7 @@ class CsvItem(pydantic.BaseModel):
 def export_credentials(
     *,
     output_file: pathlib.Path,
-    endpoint: str,
-    api_client: FlareApiClient,
+    resp_iterator: t.Iterator[requests.Response],
     cursor: CursorFile,
 ) -> None:
     pages_limiter: _Limiter = _Limiter(
@@ -42,15 +43,7 @@ def export_credentials(
         if is_output_empty:
             csv_writer.writeheader()
 
-        for response in api_client.scroll(
-            method="POST",
-            url=endpoint,
-            json={
-                "from": cursor.value(),
-                "size": 10,
-                "order_type": "asc",
-            },
-        ):
+        for response in resp_iterator:
             pages_limiter.tick()
             resp_json = response.json()
 

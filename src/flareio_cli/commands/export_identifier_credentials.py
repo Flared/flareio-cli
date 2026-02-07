@@ -24,10 +24,16 @@ def run_export_identifier_credentials(
     if cursor.value():
         typer.echo(f"Found existing cursor. Will resume from cursor={cursor.value()}")
 
+    # Configure scrolling
+    resp_iterator = api_client.scroll(
+        url=f"/firework/v3/identifiers/{identifier_id}/feed/credentials",
+        method="GET",
+        params={"from": cursor.value(), "limit": 100},
+    )
+
     # Run the export
     export_credentials(
-        endpoint=f"/firework/v3/identifiers/{identifier_id}/feed/credentials",
-        api_client=api_client,
+        resp_iterator=resp_iterator,
         cursor=cursor,
         output_file=output_file,
     )
