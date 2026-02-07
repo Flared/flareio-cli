@@ -1,22 +1,34 @@
+import dataclasses
 import typer
 
-from flareio_cli.commands.export_enant_feed import run_export_tenant_feed
+import typing as t
 
 
-app = typer.Typer()
-
-
-@app.command()
-def help(ctx: typer.Context) -> None:
-    root_ctx = ctx.find_root()
-    typer.echo(root_ctx.get_help())
-    raise typer.Exit()
-
-
-app.command(name="export-tenant-feed")(run_export_tenant_feed)
+@dataclasses.dataclass
+class Command:
+    name: str
+    callable: t.Callable
 
 
 def main() -> None:
+    app = typer.Typer()
+
+    from flareio_cli.commands.export_enant_events import run_export_tenant_events
+    from flareio_cli.commands.help import run_help
+
+    commands: list[Command] = [
+        Command(
+            name="help",
+            callable=run_help,
+        ),
+        Command(
+            name="export-tenant-events",
+            callable=run_export_tenant_events,
+        ),
+    ]
+    for command in commands:
+        app.command(name=command.name)(command.callable)
+
     app()
 
 
