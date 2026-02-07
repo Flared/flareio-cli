@@ -1,5 +1,7 @@
 import flareio
 
+from flareio_cli.version import __version__
+
 
 def get_api_client() -> flareio.FlareApiClient:
     client = flareio.FlareApiClient.from_env()
@@ -11,7 +13,7 @@ def get_api_client() -> flareio.FlareApiClient:
         if isinstance(user_agent_maybe, bytes)
         else user_agent_maybe
     )
-    user_agent_str = f"flareio-cli {user_agent_str}"
+    user_agent_str = f"flareio-cli/{__version__} {user_agent_str}".strip()
     client._session.headers["User-Agent"] = user_agent_str
 
     return client
