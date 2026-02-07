@@ -22,13 +22,13 @@ For most commands, the cli requires that you export the `FLARE_API_KEY` environm
 
 ## Usage Example
 
-Export Tenant Feed to jsonl file:
+Export Tenant Feed to CSV file:
 ```
 export FLARE_API_KEY="<api-key>"
 
 uvx run flareio-cli export-tenant-feed \
     --cursor-file=cursor.txt \
-    --output-file=output.txt \
+    --output-file=output.csv \
     --from-date=2025-01-01
 ```
 
