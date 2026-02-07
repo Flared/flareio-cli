@@ -102,7 +102,7 @@ def run_export_tenant_credentials(
     )
 
     # Run the export
-    with open(output_file, "w+", encoding="utf-8") as f_output:
+    with open(output_file, "a+", encoding="utf-8") as f_output:
         dict_writer = _get_dict_writer(f_output)
         if is_output_empty:
             dict_writer.writeheader()
