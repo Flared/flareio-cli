@@ -26,6 +26,15 @@ $ export FLARE_API_KEY="<api-key>"
 $ uvx run flareio-cli export-tenant-feed --cursor-file=cursor.txt --output-file=output.txt --from-date=2025-01-01
 ```
 
+## Contributing
+
+We recommend the following dependencies:
+- make
+- uv
+- direnv
+
+Dev commands are defined in `Makefile` and `bin/`.
+
 ## Feedback
 
 Do you have ideas or feature requests? Feel free to open issues.
