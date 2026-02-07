@@ -15,6 +15,9 @@ def create_app() -> typer.Typer:
         no_args_is_help=True,
     )
 
+    from flareio_cli.commands.export_identifier_credentials import (
+        run_export_identifier_credentials,
+    )
     from flareio_cli.commands.export_tenant_credentials import (
         run_export_tenant_credentials,
     )
@@ -38,6 +41,10 @@ def create_app() -> typer.Typer:
         Command(
             name="export-tenant-credentials",
             callable=run_export_tenant_credentials,
+        ),
+        Command(
+            name="export-identifier-credentials",
+            callable=run_export_identifier_credentials,
         ),
     ]
     for command in commands:

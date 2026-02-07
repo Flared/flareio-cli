@@ -72,18 +72,9 @@ def _export(
 
 def run_export_tenant_events(
     *,
-    cursor_file: t.Annotated[
-        pathlib.Path,
-        typer.Option(),
-    ],
-    from_date: t.Annotated[
-        datetime.datetime | None,
-        typer.Option(),
-    ] = None,
-    output_file: t.Annotated[
-        pathlib.Path,
-        typer.Option(),
-    ],
+    cursor_file: t.Annotated[pathlib.Path, typer.Option()],
+    from_date: t.Annotated[datetime.datetime | None, typer.Option()] = None,
+    output_file: t.Annotated[pathlib.Path, typer.Option()],
     format: t.Literal["csv"] = "csv",
 ) -> None:
     # Setup API client
