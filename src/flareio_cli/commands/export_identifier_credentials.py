@@ -9,10 +9,11 @@ from flareio_cli.exporters.credentials import export_credentials
 import typing as t
 
 
-def run_export_tenant_credentials(
+def run_export_identifier_credentials(
     *,
     cursor_file: t.Annotated[pathlib.Path, typer.Option()],
     output_file: t.Annotated[pathlib.Path, typer.Option()],
+    identifier_id: t.Annotated[int, typer.Option()],
     format: t.Literal["csv"] = "csv",
 ) -> None:
     # Setup API client
@@ -25,7 +26,7 @@ def run_export_tenant_credentials(
 
     # Run the export
     export_credentials(
-        endpoint="/firework/v2/me/feed/credentials",
+        endpoint=f"/firework/v3/identifiers/{identifier_id}/feed/credentials",
         api_client=api_client,
         cursor=cursor,
         output_file=output_file,
