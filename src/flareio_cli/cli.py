@@ -10,8 +10,10 @@ class Command:
     callable: t.Callable
 
 
-def main() -> None:
-    app = typer.Typer()
+def create_app() -> typer.Typer:
+    app = typer.Typer(
+        no_args_is_help=True,
+    )
 
     from flareio_cli.commands.export_tenant_credentials import (
         run_export_tenant_credentials,
@@ -36,6 +38,11 @@ def main() -> None:
     for command in commands:
         app.command(name=command.name)(command.callable)
 
+    return app
+
+
+def main() -> None:
+    app = create_app()
     app()
 
 

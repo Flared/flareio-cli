@@ -87,7 +87,7 @@ def run_export_tenant_events(
         typer.Option(),
     ],
     format: t.Literal["csv"] = "csv",
-):
+) -> None:
     # Setup API client
     api_client: FlareApiClient = get_api_client()
 
