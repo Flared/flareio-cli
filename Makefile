@@ -2,7 +2,7 @@
 
 .PHONY: test
 test:
-	uv run pytest
+	uv run pytest -vv
 
 .PHONY: check
 check:
