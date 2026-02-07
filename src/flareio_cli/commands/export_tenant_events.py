@@ -24,11 +24,9 @@ class CsvItem(pydantic.BaseModel):
 
 
 def _get_dict_writer(output_file: t.TextIO) -> csv.DictWriter:
-    fieldnames: set[str] = set()
-
+    fieldnames: list[str] = []
     for field_name, field_info in CsvItem.model_fields.items():
-        fieldnames.add(field_info.serialization_alias or field_name)
-
+        fieldnames.append(field_info.serialization_alias or field_name)
     return csv.DictWriter(output_file, fieldnames=list(fieldnames))
 
 
@@ -78,7 +76,7 @@ def _export(
             )
             f_output.flush()
 
-            increment_progress()
+            increment_progress(1)
 
 
 def run_export_tenant_events(

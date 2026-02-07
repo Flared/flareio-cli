@@ -11,7 +11,7 @@ import typing as t
 @contextlib.contextmanager
 def export_progress(
     things_done: str,
-) -> t.Iterator[t.Callable[[int], None],]:
+) -> t.Iterator[t.Callable[[int], None]]:
     """
     Standard rich progress indicators so that all exports look the same.
     """

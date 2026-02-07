@@ -13,7 +13,10 @@ class Command:
 def main() -> None:
     app = typer.Typer()
 
-    from flareio_cli.commands.export_enant_events import run_export_tenant_events
+    from flareio_cli.commands.export_tenant_credentials import (
+        run_export_tenant_credentials,
+    )
+    from flareio_cli.commands.export_tenant_events import run_export_tenant_events
     from flareio_cli.commands.help import run_help
 
     commands: list[Command] = [
@@ -24,6 +27,10 @@ def main() -> None:
         Command(
             name="export-tenant-events",
             callable=run_export_tenant_events,
+        ),
+        Command(
+            name="export-tenant-credentials",
+            callable=run_export_tenant_credentials,
         ),
     ]
     for command in commands:
