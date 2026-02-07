@@ -32,7 +32,7 @@ def _export(
     )
 
     with export_progress(
-        things_done="credentials exported",
+        object_name="credentials",
     ) as increment_progress:
         for response in api_client.scroll(
             method="POST",
@@ -64,7 +64,10 @@ def _export(
                 )
                 csv_writer.flush()
 
-                increment_progress(1)
+                increment_progress(
+                    incr_completed=1,
+                    new_cursor=next_cursor,
+                )
 
 
 def run_export_tenant_credentials(

@@ -32,7 +32,7 @@ def _export(
     filters: dict,
 ) -> None:
     with export_progress(
-        things_done="events exported",
+        object_name="events",
     ) as increment_progress:
         for event_item, event_data, next_cursor in api_client._scroll_events_items(
             method="POST",
@@ -66,7 +66,10 @@ def _export(
             )
             csv_writer.flush()
 
-            increment_progress(1)
+            increment_progress(
+                incr_completed=1,
+                new_cursor=next_cursor,
+            )
 
 
 def run_export_tenant_events(
