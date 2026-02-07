@@ -19,6 +19,7 @@ class ExportProgressUpdate(t.Protocol):
 
 @contextlib.contextmanager
 def export_progress(
+    *,
     object_name: str,
 ) -> t.Iterator[ExportProgressUpdate]:
     """
