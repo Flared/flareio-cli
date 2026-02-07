@@ -21,3 +21,7 @@ For most commands, the cli requires that you export the `FLARE_API_KEY` environm
 $ export FLARE_API_KEY="<api-key>"
 $ uv run flareio-cli export-tenant-feed --cursor-file=cursor.txt --output-file=output.txt --from-date=2025-01-01
 ```
+
+## Feedback
+
+Do you have ideas or feature requests? Feel free to open issues.
