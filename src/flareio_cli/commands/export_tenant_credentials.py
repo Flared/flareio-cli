@@ -8,6 +8,7 @@ from flareio.api_client import FlareApiClient
 from flareio_cli.api.client import get_api_client
 from flareio_cli.api.models.credentials import CredentialItem
 from flareio_cli.csv import PydanticCsvWriter
+from flareio_cli.cursor import CursorFile
 from flareio_cli.progress import export_progress
 
 import typing as t
@@ -23,9 +24,8 @@ class CsvItem(pydantic.BaseModel):
 def _export(
     *,
     api_client: FlareApiClient,
-    cursor_file: pathlib.Path,
     csv_writer: PydanticCsvWriter[CsvItem],
-    cursor: str | None,
+    cursor: CursorFile,
 ) -> None:
     pages_limiter: _Limiter = _Limiter(
         tick_interval=timedelta(seconds=1),
@@ -38,7 +38,7 @@ def _export(
             method="POST",
             url="/firework/v2/me/feed/credentials",
             json={
-                "from": cursor,
+                "from": cursor.value(),
                 "size": 10,
                 "order_type": "asc",
             },
@@ -46,10 +46,7 @@ def _export(
             pages_limiter.tick()
             resp_json = response.json()
 
-            # Save cursor to file
-            next_cursor = resp_json["next"]
-            if next_cursor is not None:
-                cursor_file.write_text(next_cursor)
+            cursor.save(resp_json["next"])
 
             for item in resp_json["items"]:
                 credential_item = CredentialItem.model_validate(item)
@@ -66,7 +63,7 @@ def _export(
 
                 increment_progress(
                     incr_completed=1,
-                    new_cursor=next_cursor,
+                    new_cursor=cursor.value(),
                 )
 
 
@@ -86,9 +83,9 @@ def run_export_tenant_credentials(
     api_client: FlareApiClient = get_api_client()
 
     # Load existing cursor if it exists.
-    cursor: str | None = cursor_file.read_text() if cursor_file.exists() else None
-    cursor = cursor or None
-    typer.echo(f"Found existing cursor. Will resume from {cursor=}")
+    cursor: CursorFile = CursorFile(path=cursor_file)
+    if cursor.value():
+        typer.echo(f"Found existing cursor. Will resume from cursor={cursor.value()}")
 
     is_output_empty: bool = (
         not output_file.exists() or not output_file.read_text().strip()
@@ -105,6 +102,5 @@ def run_export_tenant_credentials(
         _export(
             api_client=api_client,
             csv_writer=dict_writer,
-            cursor_file=cursor_file,
             cursor=cursor,
         )

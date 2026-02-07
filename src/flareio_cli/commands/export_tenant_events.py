@@ -8,6 +8,7 @@ from flareio.api_client import FlareApiClient
 from flareio_cli.api.client import get_api_client
 from flareio_cli.api.models.events import EventItem
 from flareio_cli.csv import PydanticCsvWriter
+from flareio_cli.cursor import CursorFile
 from flareio_cli.progress import export_progress
 
 import typing as t
@@ -26,9 +27,8 @@ class CsvItem(pydantic.BaseModel):
 def _export(
     *,
     api_client: FlareApiClient,
-    cursor_file: pathlib.Path,
     csv_writer: PydanticCsvWriter[CsvItem],
-    cursor: str | None,
+    cursor: CursorFile,
     filters: dict,
 ) -> None:
     with export_progress(
@@ -41,7 +41,7 @@ def _export(
             json={
                 "size": 10,
                 "order": "asc",
-                "from": cursor,
+                "from": cursor.value(),
                 "filters": filters,
                 "query": {
                     "type": "query_string",
@@ -49,9 +49,7 @@ def _export(
                 },
             },
         ):
-            # Save cursor to file
-            if next_cursor is not None:
-                cursor_file.write_text(next_cursor)
+            cursor.save(next_cursor)
 
             event_item = EventItem.model_validate(event_item)
 
@@ -92,9 +90,9 @@ def run_export_tenant_events(
     api_client: FlareApiClient = get_api_client()
 
     # Load existing cursor if it exists.
-    cursor: str | None = cursor_file.read_text() if cursor_file.exists() else None
-    cursor = cursor or None
-    typer.echo(f"Found existing cursor. Will resume from {cursor=}")
+    cursor: CursorFile = CursorFile(path=cursor_file)
+    if cursor.value():
+        typer.echo(f"Found existing cursor. Will resume from cursor={cursor.value()}")
 
     # Ensure the date has a timezone.
     if from_date and not from_date.tzinfo:
@@ -120,7 +118,6 @@ def run_export_tenant_events(
         _export(
             api_client=api_client,
             csv_writer=csv_writer,
-            cursor_file=cursor_file,
             cursor=cursor,
             filters=filters,
         )
