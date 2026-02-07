@@ -1,6 +1,6 @@
 # flareio-cli
 
-`flareio-cli` is aBeta CLI interface for the [flare.io API](https://api.docs.flare.io/).
+`flareio-cli` is a beta CLI interface for the [flare.io API](https://api.docs.flare.io/).
 
 The [full CLI documentation](https://api.docs.flare.io/sdk/cli) can be found on Flare's API documentation website.
 
@@ -27,9 +27,9 @@ $ uvx run flareio-cli export-tenant-feed --cursor-file=cursor.txt --output-file=
 ## Contributing
 
 We recommend the following dependencies:
-- make
-- uv
-- direnv
+- `make`
+- `uv`
+- `direnv`
 
 The `Makefile` contains the following targets:
 - `make test` will run tests
@@ -37,8 +37,6 @@ The `Makefile` contains the following targets:
 - `make format` format will format the code
 - `make format-check` will run linting
 - `make ci` will run CI equivalent
-
-Dev commands are defined in `Makefile` and `bin/`.
 
 ## Feedback
 
