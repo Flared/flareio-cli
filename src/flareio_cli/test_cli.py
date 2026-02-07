@@ -1,5 +1,6 @@
 from click.testing import Result
 from flareio_cli.cli import create_app
+from flareio_cli.version import __version__
 from typer.testing import CliRunner
 
 
@@ -19,3 +20,11 @@ def test_app_no_args_is_help() -> None:
     )
     assert result.exit_code == 2
     assert "Usage:" in result.output
+
+
+def test_version() -> None:
+    result = run_test(
+        args=["version"],
+    )
+    assert result.exit_code == 0
+    assert result.output == f"flareio-cli {__version__}\n"

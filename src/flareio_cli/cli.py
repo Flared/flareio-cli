@@ -20,11 +20,16 @@ def create_app() -> typer.Typer:
     )
     from flareio_cli.commands.export_tenant_events import run_export_tenant_events
     from flareio_cli.commands.help import run_help
+    from flareio_cli.commands.version import run_version
 
     commands: list[Command] = [
         Command(
             name="help",
             callable=run_help,
+        ),
+        Command(
+            name="version",
+            callable=run_version,
         ),
         Command(
             name="export-tenant-events",
