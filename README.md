@@ -20,12 +20,16 @@ uvx flareio-cli --help
 
 For most commands, the cli requires that you export the `FLARE_API_KEY` environment variable.
 
-## Usage Examples
+## Usage Example
 
-**Export Tenant Feed to jsonl file**
+Export Tenant Feed to jsonl file:
 ```
-$ export FLARE_API_KEY="<api-key>"
-$ uvx run flareio-cli export-tenant-feed --cursor-file=cursor.txt --output-file=output.txt --from-date=2025-01-01
+export FLARE_API_KEY="<api-key>"
+
+uvx run flareio-cli export-tenant-feed \
+    --cursor-file=cursor.txt \
+    --output-file=output.txt \
+    --from-date=2025-01-01
 ```
 
 ## Contributing
