@@ -51,6 +51,7 @@ extend-select = [
     "C416",
     "C417",
     "C419",
+    "F401",
 ]
 
 [tool.ruff.lint.isort]
