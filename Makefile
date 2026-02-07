@@ -13,11 +13,12 @@ ci: test check format-check
 
 .PHONY: format
 format:
-	uv run ruff check --fix
+	uv run ruff check --fix --unsafe-fixes
 	uv run ruff format
 
 .PHONY: format-check
 format-check:
+	uv run ruff check
 	uv run ruff format --check
 
 .PHONY: clean
