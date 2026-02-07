@@ -12,11 +12,12 @@ keywords = [
 authors = [
     { name = "Alexandre Viau", email = "alexandre.viau@flare.io" }
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 classifiers = [
   "Intended Audience :: Information Technology",
   "Intended Audience :: Developers",
   "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -38,7 +39,7 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
-    "pytest>=9.0.2",
+    "pytest>=8",
     "ruff>=0.15.0",
     "ty>=0.0.15",
 ]
