@@ -1,8 +1,6 @@
 # flareio-cli
 
-Beta CLI interface for the [flare.io API](https://api.docs.flare.io/).
-
-## Documentation
+`flareio-cli` is aBeta CLI interface for the [flare.io API](https://api.docs.flare.io/).
 
 The [full CLI documentation](https://api.docs.flare.io/sdk/cli) can be found on Flare's API documentation website.
 
@@ -32,6 +30,13 @@ We recommend the following dependencies:
 - make
 - uv
 - direnv
+
+The `Makefile` contains the following targets:
+- `make test` will run tests
+- `make check` will run typechecking
+- `make format` format will format the code
+- `make format-check` will run linting
+- `make ci` will run CI equivalent
 
 Dev commands are defined in `Makefile` and `bin/`.
 
