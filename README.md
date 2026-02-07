@@ -8,7 +8,7 @@ The [full CLI documentation](https://api.docs.flare.io/sdk/cli) can be found on 
 
 `flareio-cli` is [available on PyPI](https://pypi.org/project/flareio-cli/), you can install it using:
 ```
-pip install flareio-cli`
+pip install flareio-cli
 ```
 
 However, we recommend that you invoke it using [uv](https://docs.astral.sh/uv/). Example:
