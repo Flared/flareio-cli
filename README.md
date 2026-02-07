@@ -12,6 +12,15 @@ We recommend that you run `flareio-cli` using [uv](https://docs.astral.sh/uv/).
 $ uvx flareio-cli --help
 ```
 
+## Installing
+
+`flareio-cli` is [available on PyPI](https://pypi.org/project/flareio-cli/), you can install it using `pip install flareio-cli`.
+
+However, we recommend that you invoke it using [uv](https://docs.astral.sh/uv/). Example::
+```
+uvx flareio-cli --help
+```
+
 ## Configuration
 
 For most commands, the cli requires that you export the `FLARE_API_KEY` environment variable.
