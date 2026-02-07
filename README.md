@@ -2,6 +2,10 @@
 
 Beta CLI interface for the [flare.io API](https://api.docs.flare.io/).
 
+## Documentation
+
+The [full CLI documentation](https://api.docs.flare.io/sdk/cli) can be found on Flare's API documentation website.
+
 ## Basic Usage
 
 We recommend that you run `flareio-cli` using [uv](https://docs.astral.sh/uv/).
