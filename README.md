@@ -19,8 +19,5 @@ For most commands, the cli requires that you export the `FLARE_API_KEY` environm
 **Export Tenant Feed to jsonl file**
 ```
 $ export FLARE_API_KEY="<api-key>"
-$ uv run flareio-cli export-tenant-feed \
-    --cursor-file=cursor.txt \
-    --output-file=output.txt \
-    --from-date=2025-01-01
+$ uv run flareio-cli export-tenant-feed --cursor-file=cursor.txt --output-file=output.txt --from-date=2025-01-01
 ```
