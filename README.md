@@ -32,6 +32,8 @@ uvx run flareio-cli export-tenant-feed \
     --from-date=2025-01-01
 ```
 
+Learn more in the [full CLI documentation](https://api.docs.flare.io/sdk/cli).
+
 ## Contributing
 
 We recommend the following dependencies:
