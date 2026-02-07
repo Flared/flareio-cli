@@ -1,4 +1,3 @@
-import csv
 import pathlib
 import pydantic
 import typer
@@ -8,6 +7,7 @@ from flareio._ratelimit import _Limiter
 from flareio.api_client import FlareApiClient
 from flareio_cli.api.client import get_api_client
 from flareio_cli.api.models.credentials import CredentialItem
+from flareio_cli.csv import PydanticCsvWriter
 from flareio_cli.progress import export_progress
 
 import typing as t
@@ -20,19 +20,11 @@ class CsvItem(pydantic.BaseModel):
     source_id: str = pydantic.Field()
 
 
-def _get_dict_writer(output_file: t.TextIO) -> csv.DictWriter:
-    fieldnames: list[str] = []
-    for field_name, field_info in CsvItem.model_fields.items():
-        fieldnames.append(field_info.serialization_alias or field_name)
-    return csv.DictWriter(output_file, fieldnames=list(fieldnames))
-
-
 def _export(
     *,
     api_client: FlareApiClient,
     cursor_file: pathlib.Path,
-    dict_writer: csv.DictWriter,
-    f_output: t.TextIO,
+    csv_writer: PydanticCsvWriter[CsvItem],
     cursor: str | None,
 ) -> None:
     pages_limiter: _Limiter = _Limiter(
@@ -62,17 +54,15 @@ def _export(
             for item in resp_json["items"]:
                 credential_item = CredentialItem.model_validate(item)
 
-                dict_writer.writerow(
-                    CsvItem(
+                csv_writer.writerow(
+                    row=CsvItem(
                         identity_name=credential_item.identity_name,
                         hash=credential_item.hash,
                         id=credential_item.id,
                         source_id=credential_item.source_id,
-                    ).model_dump(
-                        by_alias=True,
-                    )
+                    ),
                 )
-                f_output.flush()
+                csv_writer.flush()
 
                 increment_progress(1)
 
@@ -103,13 +93,15 @@ def run_export_tenant_credentials(
 
     # Run the export
     with open(output_file, "a+", encoding="utf-8") as f_output:
-        dict_writer = _get_dict_writer(f_output)
+        dict_writer = PydanticCsvWriter(
+            file=f_output,
+            model=CsvItem,
+        )
         if is_output_empty:
             dict_writer.writeheader()
         _export(
             api_client=api_client,
-            dict_writer=dict_writer,
+            csv_writer=dict_writer,
             cursor_file=cursor_file,
-            f_output=f_output,
             cursor=cursor,
         )
