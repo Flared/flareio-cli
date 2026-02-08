@@ -2,7 +2,7 @@ import json
 import pathlib
 import pydantic
 
-from flareio._models import _ScrollEventsResult
+from flareio.models import ScrollEventsResult
 from flareio_cli.api.models.events import EventItem
 from flareio_cli.cursor import CursorFile
 from flareio_cli.exporters.base import ExportPage
@@ -22,16 +22,16 @@ class EventExportItem(pydantic.BaseModel):
 
 
 def _event_pages(
-    events_iterator: t.Iterator[_ScrollEventsResult],
+    events_iterator: t.Iterator[ScrollEventsResult],
 ) -> t.Iterator[ExportPage[EventExportItem]]:
     for result in events_iterator:
-        event_item = EventItem.model_validate(result.item)
+        event_item = EventItem.model_validate(result.metadata)
         export_item = EventExportItem(
             uid=event_item.metadata.uid,
             matched_at=event_item.metadata.matched_at,
             severity=event_item.metadata.severity,
             notes=event_item.tenant_metadata.notes,
-            data=json.dumps(result.data),
+            data=json.dumps(result.event),
         )
         yield ExportPage(
             items=[export_item],
@@ -42,7 +42,7 @@ def _event_pages(
 def export_events(
     *,
     output_file: pathlib.Path,
-    events_iterator: t.Iterator[_ScrollEventsResult],
+    events_iterator: t.Iterator[ScrollEventsResult],
     cursor: CursorFile,
 ) -> None:
     export_to_csv(
