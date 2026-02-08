@@ -5,18 +5,52 @@ import requests
 from datetime import timedelta
 from flareio._ratelimit import _Limiter
 from flareio_cli.api.models.credentials import CredentialItem
-from flareio_cli.csv import PydanticCsvWriter
 from flareio_cli.cursor import CursorFile
-from flareio_cli.progress import export_progress
+from flareio_cli.exporters.base import ExportPage
+from flareio_cli.exporters.base import export_to_csv
 
 import typing as t
 
 
-class CsvItem(pydantic.BaseModel):
+class CredentialExportItem(pydantic.BaseModel):
     id: int = pydantic.Field()
     identity_name: str = pydantic.Field()
     hash: str = pydantic.Field()
     source_id: str = pydantic.Field()
+
+    @classmethod
+    def from_credential_item(cls, *, item: CredentialItem) -> "CredentialExportItem":
+        return cls(
+            id=item.id,
+            identity_name=item.identity_name,
+            hash=item.hash,
+            source_id=item.source_id,
+        )
+
+
+def _credentials_pages(
+    *,
+    resp_iterator: t.Iterator[requests.Response],
+) -> t.Iterator[ExportPage[CredentialExportItem]]:
+    pages_limiter = _Limiter(tick_interval=timedelta(seconds=1))
+
+    for response in resp_iterator:
+        pages_limiter.tick()
+
+        resp_json = response.json()
+
+        next: str | None = resp_json["next"]
+        items = [
+            CredentialExportItem.from_credential_item(
+                item=CredentialItem.model_validate(item),
+            )
+            for item in resp_json["items"]
+        ]
+
+        yield ExportPage(
+            items=items,
+            next=next,
+        )
 
 
 def export_credentials(
@@ -25,44 +59,12 @@ def export_credentials(
     resp_iterator: t.Iterator[requests.Response],
     cursor: CursorFile,
 ) -> None:
-    pages_limiter: _Limiter = _Limiter(
-        tick_interval=timedelta(seconds=1),
+    export_to_csv(
+        output_file=output_file,
+        pages=_credentials_pages(
+            resp_iterator=resp_iterator,
+        ),
+        cursor=cursor,
+        object_name="credentials",
+        item_model=CredentialExportItem,
     )
-    is_output_empty: bool = (
-        not output_file.exists() or not output_file.read_text().strip()
-    )
-
-    with (
-        open(output_file, "a+", encoding="utf-8") as f_output,
-        export_progress(object_name="credentials") as increment_progress,
-    ):
-        csv_writer = PydanticCsvWriter(
-            file=f_output,
-            model=CsvItem,
-        )
-        if is_output_empty:
-            csv_writer.writeheader()
-
-        for response in resp_iterator:
-            pages_limiter.tick()
-            resp_json = response.json()
-
-            cursor.save(resp_json["next"])
-
-            for item in resp_json["items"]:
-                credential_item = CredentialItem.model_validate(item)
-
-                csv_writer.writerow(
-                    row=CsvItem(
-                        identity_name=credential_item.identity_name,
-                        hash=credential_item.hash,
-                        id=credential_item.id,
-                        source_id=credential_item.source_id,
-                    ),
-                )
-                csv_writer.flush()
-
-                increment_progress(
-                    incr_completed=1,
-                    new_cursor=cursor.value(),
-                )

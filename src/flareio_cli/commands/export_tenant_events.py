@@ -2,6 +2,7 @@ import datetime
 import pathlib
 import typer
 
+from flareio._models import _ScrollEventsResult
 from flareio.api_client import FlareApiClient
 from flareio_cli.api.client import get_api_client
 from flareio_cli.cursor import CursorFile
@@ -38,22 +39,20 @@ def export_tenant_events(
     if from_date:
         filters["estimated_created_at"] = {"gte": from_date.isoformat()}
 
-    events_iterator: t.Iterator[tuple[dict, dict, str | None]] = (
-        api_client._scroll_events_items(
-            method="POST",
-            pages_url="/firework/v4/events/tenant/_search",
-            events_url="/firework/v2/activities/",
-            json={
-                "size": 10,
-                "order": "asc",
-                "from": cursor.value(),
-                "filters": filters,
-                "query": {
-                    "type": "query_string",
-                    "query_string": "*",
-                },
+    events_iterator: t.Iterator[_ScrollEventsResult] = api_client._scroll_events_items(
+        method="POST",
+        pages_url="/firework/v4/events/tenant/_search",
+        events_url="/firework/v2/activities/",
+        json={
+            "size": 10,
+            "order": "asc",
+            "from": cursor.value(),
+            "filters": filters,
+            "query": {
+                "type": "query_string",
+                "query_string": "*",
             },
-        )
+        },
     )
 
     export_events(
