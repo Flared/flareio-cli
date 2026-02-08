@@ -10,7 +10,11 @@ from flareio_cli.exporters.events import export_events
 import typing as t
 
 
-def run_export_tenant_events(
+app = typer.Typer()
+
+
+@app.command()
+def export_tenant_events(
     *,
     cursor_file: t.Annotated[pathlib.Path, typer.Option()],
     from_date: t.Annotated[datetime.datetime | None, typer.Option()] = None,

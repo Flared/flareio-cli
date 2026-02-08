@@ -1,13 +1,4 @@
-import dataclasses
 import typer
-
-import typing as t
-
-
-@dataclasses.dataclass
-class Command:
-    name: str
-    callable: t.Callable
 
 
 def create_app() -> typer.Typer:
@@ -16,39 +7,25 @@ def create_app() -> typer.Typer:
     )
 
     from flareio_cli.commands.export_identifier_credentials import (
-        run_export_identifier_credentials,
+        app as export_identifier_credentials_app,
     )
     from flareio_cli.commands.export_tenant_credentials import (
-        run_export_tenant_credentials,
+        app as export_tenant_credentials_app,
     )
-    from flareio_cli.commands.export_tenant_events import run_export_tenant_events
-    from flareio_cli.commands.help import run_help
-    from flareio_cli.commands.version import run_version
+    from flareio_cli.commands.export_tenant_events import (
+        app as export_tenant_events_app,
+    )
+    from flareio_cli.commands.help import app as help_app
+    from flareio_cli.commands.version import app as version_app
 
-    commands: list[Command] = [
-        Command(
-            name="help",
-            callable=run_help,
-        ),
-        Command(
-            name="version",
-            callable=run_version,
-        ),
-        Command(
-            name="export-tenant-events",
-            callable=run_export_tenant_events,
-        ),
-        Command(
-            name="export-tenant-credentials",
-            callable=run_export_tenant_credentials,
-        ),
-        Command(
-            name="export-identifier-credentials",
-            callable=run_export_identifier_credentials,
-        ),
-    ]
-    for command in commands:
-        app.command(name=command.name)(command.callable)
+    for cmd_app in [
+        export_identifier_credentials_app,
+        export_tenant_credentials_app,
+        export_tenant_events_app,
+        help_app,
+        version_app,
+    ]:
+        app.add_typer(cmd_app)
 
     return app
 

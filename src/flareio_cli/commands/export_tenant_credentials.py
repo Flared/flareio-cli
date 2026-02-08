@@ -9,7 +9,11 @@ from flareio_cli.exporters.credentials import export_credentials
 import typing as t
 
 
-def run_export_tenant_credentials(
+app = typer.Typer()
+
+
+@app.command()
+def export_tenant_credentials(
     *,
     cursor_file: t.Annotated[pathlib.Path, typer.Option()],
     output_file: t.Annotated[pathlib.Path, typer.Option()],
