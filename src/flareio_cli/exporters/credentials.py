@@ -3,7 +3,7 @@ import pydantic
 import requests
 
 from datetime import timedelta
-from flareio._ratelimit import _Limiter
+from flareio.ratelimit import Limiter
 from flareio_cli.api.models.credentials import CredentialItem
 from flareio_cli.cursor import CursorFile
 from flareio_cli.exporters.base import ExportPage
@@ -32,7 +32,7 @@ def _credentials_pages(
     *,
     resp_iterator: t.Iterator[requests.Response],
 ) -> t.Iterator[ExportPage[CredentialExportItem]]:
-    pages_limiter = _Limiter(tick_interval=timedelta(seconds=1))
+    pages_limiter = Limiter(tick_interval=timedelta(seconds=1))
 
     for response in resp_iterator:
         pages_limiter.tick()

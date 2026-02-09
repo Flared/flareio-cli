@@ -28,7 +28,7 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "flareio>=2.0.0",
+    "flareio>=2.1.0",
     "pydantic>=2.12.5",
     "typer>=0.21.1",
 ]
