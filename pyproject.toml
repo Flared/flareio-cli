@@ -18,6 +18,7 @@ classifiers = [
   "Environment :: Console",
   "Operating System :: POSIX :: Linux",
   "License :: OSI Approved :: MIT License",
+  "Topic :: Security",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
