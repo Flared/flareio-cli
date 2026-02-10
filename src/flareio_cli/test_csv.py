@@ -1,4 +1,5 @@
 import io
+
 import pydantic
 
 from flareio_cli.csv import PydanticCsvWriter

@@ -1,12 +1,13 @@
 import dataclasses
 import pathlib
+
 import pydantic
+
+import typing as t
 
 from flareio_cli.csv import PydanticCsvWriter
 from flareio_cli.cursor import CursorFile
 from flareio_cli.progress import export_progress
-
-import typing as t
 
 
 ExportItem = t.TypeVar("ExportItem", bound=pydantic.BaseModel)

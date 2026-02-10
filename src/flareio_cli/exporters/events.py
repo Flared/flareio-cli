@@ -1,14 +1,16 @@
 import json
 import pathlib
+
 import pydantic
 
+import typing as t
+
 from flareio.models import ScrollEventsResult
+
 from flareio_cli.api.models.events import EventItem
 from flareio_cli.cursor import CursorFile
 from flareio_cli.exporters.base import ExportPage
 from flareio_cli.exporters.base import export_to_csv
-
-import typing as t
 
 
 class EventExportItem(pydantic.BaseModel):

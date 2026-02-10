@@ -1,7 +1,8 @@
 from click.testing import Result
+from typer.testing import CliRunner
+
 from flareio_cli.cli import create_app
 from flareio_cli.version import __version__
-from typer.testing import CliRunner
 
 
 def run_test(

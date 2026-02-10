@@ -1,12 +1,14 @@
 import pathlib
+
 import typer
 
+import typing as t
+
 from flareio.api_client import FlareApiClient
+
 from flareio_cli.api.client import get_api_client
 from flareio_cli.cursor import CursorFile
 from flareio_cli.exporters.credentials import export_credentials
-
-import typing as t
 
 
 app = typer.Typer()
