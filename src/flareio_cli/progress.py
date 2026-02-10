@@ -2,26 +2,46 @@ import contextlib
 
 from rich.progress import Progress
 from rich.progress import SpinnerColumn
+from rich.progress import TaskID
 from rich.progress import TextColumn
 from rich.progress import TimeElapsedColumn
 
 import typing as t
 
 
-class ExportProgressUpdate(t.Protocol):
-    def __call__(
+class ExportProgressManager:
+    def __init__(
+        self,
+        *,
+        progress: Progress,
+        task_id: TaskID,
+    ) -> None:
+        self.progress: Progress = progress
+        self.task_id: TaskID = task_id
+
+        self.current_completed: int = 0
+        self.current_cursor: str | None = None
+
+    def update_progress(
         self,
         *,
         incr_completed: int,
         new_cursor: str | None = None,
-    ) -> None: ...
+    ) -> None:
+        self.current_completed = self.current_completed + incr_completed
+
+        self.progress.update(
+            self.task_id,
+            completed=self.current_completed,
+            cursor=new_cursor or self.current_cursor,
+        )
 
 
 @contextlib.contextmanager
 def export_progress(
     *,
     object_name: str,
-) -> t.Iterator[ExportProgressUpdate]:
+) -> t.Iterator[ExportProgressManager]:
     """
     Standard rich progress indicators so that all exports look the same.
     """
@@ -32,30 +52,12 @@ def export_progress(
         TimeElapsedColumn(),
         TextColumn("[grey70]cursor={task.fields[cursor]}"),
     ) as progress:
-        current_completed: int = 0
-        current_cursor: str | None = None
-
-        def _incr_progress(
-            *,
-            incr_completed: int,
-            new_cursor: str | None = None,
-        ) -> None:
-            nonlocal current_completed
-            current_completed = current_completed + incr_completed
-
-            nonlocal current_cursor
-            current_cursor = new_cursor or current_cursor
-
-            progress.update(
-                progress_task,
-                completed=current_completed,
-                cursor=current_cursor,
-            )
-
-        progress_task = progress.add_task(
-            description=f"Exporting {object_name}...",
-            total=None,
-            cursor=None,
+        progress_manager = ExportProgressManager(
+            progress=progress,
+            task_id=progress.add_task(
+                description=f"Exporting {object_name}...",
+                total=None,
+                cursor=None,
+            ),
         )
-
-        yield _incr_progress
+        yield progress_manager

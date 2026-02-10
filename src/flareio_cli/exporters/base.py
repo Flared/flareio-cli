@@ -55,7 +55,7 @@ def _export_to_csv(
 
     with (
         open(output_file, "a+", encoding="utf-8") as f_output,
-        export_progress(object_name=object_name) as update_progress,
+        export_progress(object_name=object_name) as progress_manager,
     ):
         writer = PydanticCsvWriter(
             file=f_output,
@@ -71,7 +71,7 @@ def _export_to_csv(
 
             cursor.save(page.next)
 
-            update_progress(
+            progress_manager.update_progress(
                 incr_completed=len(page.items),
                 new_cursor=cursor.value(),
             )
