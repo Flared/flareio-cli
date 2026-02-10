@@ -2,6 +2,7 @@ import dataclasses
 import pathlib
 
 import pydantic
+import typer
 
 import typing as t
 
@@ -20,6 +21,27 @@ class ExportPage(t.Generic[ExportItem]):
 
 
 def export_to_csv(
+    *,
+    output_file: pathlib.Path,
+    pages: t.Iterator[ExportPage[ExportItem]],
+    cursor: CursorFile,
+    object_name: str = "items",
+    item_model: type[ExportItem],
+) -> None:
+    try:
+        _export_to_csv(
+            output_file=output_file,
+            pages=pages,
+            cursor=cursor,
+            object_name=object_name,
+            item_model=item_model,
+        )
+    except KeyboardInterrupt:
+        typer.echo(f"Stopping import. You may resume using cursor={cursor.value()}")
+        raise typer.Abort()
+
+
+def _export_to_csv(
     *,
     output_file: pathlib.Path,
     pages: t.Iterator[ExportPage[ExportItem]],
