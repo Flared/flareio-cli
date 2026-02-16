@@ -9,7 +9,7 @@ from flareio.api_client import FlareApiClient
 from flareio.models import ScrollEventsResult
 
 from flareio_cli.api.client import get_api_client
-from flareio_cli.cursor import CursorFile
+from flareio_cli.cursor import Cursor
 from flareio_cli.exporters.events import export_events
 
 
@@ -28,7 +28,7 @@ def export_tenant_events(
     api_client: FlareApiClient = get_api_client()
 
     # Load existing cursor if it exists.
-    cursor: CursorFile = CursorFile(path=cursor_file)
+    cursor: Cursor = Cursor.from_csv(path=cursor_file)
     if cursor.value():
         typer.echo(f"Found existing cursor. Will resume from cursor={cursor.value()}")
 

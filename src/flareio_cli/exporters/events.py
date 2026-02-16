@@ -8,7 +8,7 @@ import typing as t
 from flareio.models import ScrollEventsResult
 
 from flareio_cli.api.models.events import EventItem
-from flareio_cli.cursor import CursorFile
+from flareio_cli.cursor import Cursor
 from flareio_cli.exporters.base import ExportPage
 from flareio_cli.exporters.base import export_to_csv
 
@@ -45,7 +45,7 @@ def export_events(
     *,
     output_file: pathlib.Path,
     events_iterator: t.Iterator[ScrollEventsResult],
-    cursor: CursorFile,
+    cursor: Cursor,
 ) -> None:
     export_to_csv(
         output_file=output_file,

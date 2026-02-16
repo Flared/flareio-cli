@@ -10,7 +10,7 @@ import typing as t
 from flareio.ratelimit import Limiter
 
 from flareio_cli.api.models.credentials import CredentialItem
-from flareio_cli.cursor import CursorFile
+from flareio_cli.cursor import Cursor
 from flareio_cli.exporters.base import ExportPage
 from flareio_cli.exporters.base import export_to_csv
 
@@ -60,7 +60,7 @@ def export_credentials(
     *,
     output_file: pathlib.Path,
     resp_iterator: t.Iterator[requests.Response],
-    cursor: CursorFile,
+    cursor: Cursor,
 ) -> None:
     export_to_csv(
         output_file=output_file,

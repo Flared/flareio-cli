@@ -1,26 +1,38 @@
+import csv
 import pathlib
 
 
-class CursorFile:
+class Cursor:
     def __init__(
         self,
         *,
-        path: pathlib.Path,
+        value: str | None,
     ) -> None:
-        self._path = path
-        self._cached_value: str | None = None
+        self._value: str | None = value
 
     def value(self) -> str | None:
-        if self._cached_value:
-            return self._cached_value
-        if not self._path.exists():
-            return None
-        cursor = self._path.read_text().strip() or None
-        self._cached_value = cursor
-        return cursor
+        return self._value
 
     def save(self, value: str | None) -> None:
         if not value:
             return
-        self._cached_value = value
-        self._path.write_text(value)
+        self._value = value
+
+    @classmethod
+    def from_csv(
+        cls,
+        *,
+        path: pathlib.Path,
+    ) -> "Cursor":
+        cursor = cls(value=None)
+
+        if not path.exists():
+            return cursor
+
+        with open(path, "r", encoding="utf-8") as f:
+            csv_reader = csv.DictReader(f)
+            for row in csv_reader:
+                next_ = row.get("next")
+                cursor.save(next_)
+
+        return cursor

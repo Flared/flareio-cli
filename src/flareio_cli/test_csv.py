@@ -3,6 +3,7 @@ import io
 import pydantic
 
 from flareio_cli.csv import PydanticCsvWriter
+from flareio_cli.cursor import Cursor
 
 
 def test_pydantic_csv_writer() -> None:
@@ -18,13 +19,19 @@ def test_pydantic_csv_writer() -> None:
     )
 
     writer.writeheader()
-    writer.writerow(TestModel(first_field=1, second_field="Alice"))
-    writer.writerow(TestModel(first_field=2, second_field="Bob"))
+    writer.writerow(
+        row=TestModel(first_field=1, second_field="Alice"),
+        cursor=Cursor(value=None),
+    )
+    writer.writerow(
+        row=TestModel(first_field=2, second_field="Bob"),
+        cursor=Cursor(value=None),
+    )
 
     assert (
         csv_file_str.getvalue()
-        == """first_field,second.field
-1,Alice
-2,Bob
+        == """first_field,second.field,next
+1,Alice,
+2,Bob,
 """
     )

@@ -7,11 +7,14 @@ import typer
 import typing as t
 
 from flareio_cli.csv import PydanticCsvWriter
-from flareio_cli.cursor import CursorFile
+from flareio_cli.cursor import Cursor
 from flareio_cli.progress import export_progress
 
 
-ExportItem = t.TypeVar("ExportItem", bound=pydantic.BaseModel)
+ExportItem = t.TypeVar(
+    "ExportItem",
+    bound=pydantic.BaseModel,
+)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -24,7 +27,7 @@ def export_to_csv(
     *,
     output_file: pathlib.Path,
     pages: t.Iterator[ExportPage[ExportItem]],
-    cursor: CursorFile,
+    cursor: Cursor,
     object_name: str = "items",
     item_model: type[ExportItem],
 ) -> None:
@@ -45,7 +48,7 @@ def _export_to_csv(
     *,
     output_file: pathlib.Path,
     pages: t.Iterator[ExportPage[ExportItem]],
-    cursor: CursorFile,
+    cursor: Cursor,
     object_name: str = "items",
     item_model: type[ExportItem],
 ) -> None:
@@ -65,11 +68,14 @@ def _export_to_csv(
             writer.writeheader()
 
         for page in pages:
-            for row in page.items:
-                writer.writerow(row)
-                writer.flush()
-
             cursor.save(page.next)
+
+            for row in page.items:
+                writer.writerow(
+                    row=row,
+                    cursor=cursor,
+                )
+                writer.flush()
 
             progress_manager.update_progress(
                 incr_completed=len(page.items),
