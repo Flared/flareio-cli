@@ -1,6 +1,6 @@
 [project]
 name = "flareio-cli"
-version = "0.7.5"
+version = "0.8.0"
 description = "CLI interface for the flare.io API."
 repository = "https://github.com/Flared/flareio-cli"
 readme = "README.md"
